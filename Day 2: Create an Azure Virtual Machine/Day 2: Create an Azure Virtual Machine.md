@@ -19,3 +19,13 @@ The requirements are:
 After completing these steps, make sure you can SSH into the virtual machine.
 
 Use below given **Azure Credentials:** (You can run the `showcreds` command on the `azure-client` host to retrieve credentials)
+
+```
+```
+![alt text](image-4.png)
+![alt text](image-5.png)
+![alt text](image-6.png)
+![alt text](image-2.png)
+![alt text](image-3.png)
+![alt text](image-1.png)
+![alt text](image.png)
