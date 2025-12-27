@@ -184,7 +184,7 @@ az vm get-instance-view \
 ![alt text](image-3.png)
 
 ---
-```
+```json
 ~ ➜  az network vnet show -g kml_rg_main-7110462309124cf4 -n xfusion-vnet -o table
 EnableDdosProtection    Location    Name          PrivateEndpointVNetPolicies    ProvisioningState    ResourceGroup                 ResourceGuid
 ----------------------  ----------  ------------  -----------------------------  -------------------  ----------------------------  ------------------------------------
