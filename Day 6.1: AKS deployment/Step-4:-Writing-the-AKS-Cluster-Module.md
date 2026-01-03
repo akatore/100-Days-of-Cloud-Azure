@@ -1,3 +1,5 @@
+Previous: [Step 3: Writing the Network Module.md](./Step-3:-Writing-the-Network-Module.md)
+
 You corrected yourself perfectly halfway through! It is a tricky concept, so let's clear up that final bit of doubt.
 
 **Yes, the code will fail (Option C is correct).** Here is why:
@@ -97,6 +99,55 @@ Look closely at the `network_profile` block I added at the end.
 If you remember from our earlier discussion about **Azure CNI** vs **Kubenet**, setting `network_plugin = "azure"` turns on Azure CNI.
 
 **Question:** Since we set this to `"azure"` (Azure CNI), what happens if we try to deploy this module using a tiny subnet (like a `/28` with only 11 IPs)?
+```
+A) Terraform will automatically expand the subnet for us.
+B) The deployment will likely fail or get stuck because there aren't enough IPs for the pods.
+C) It will automatically switch to Kubenet to save space.
+```
+
+## Doubts 
+Wait dont leave me, __Cant we just reference the `aks_subnet_id` created in network module?, instead of outputting it?__
+
+__This way AKS module would receive the `aks_subnet_id` and code will not fail.__
+
+---
+I am definitely not leaving you! Let's clear this up, because this is the #1 confusion people have when moving from "one big file" to "modules."
+
+The short answer is: **No, you cannot reference it directly without the output.**
+
+Here is the "Why":
+
+### The Concept: Module Scope (The "Locked Room" Rule)
+
+In Terraform, every module is like a **soundproof, locked room**.
+
+* **The Network Module** is in Room A.
+* **The AKS Module** is in Room B.
+
+When Room A builds the Subnet, that information stays inside Room A. Room B has **no idea** what is happening in Room A. It cannot "see" the resource names or IDs inside Room A.
+
+If you try to reference `azurerm_subnet.aks_subnet.id` inside the **AKS Module**, Terraform will say: *"I don't know what this is. This resource is not defined in this folder."*
+
+### How "Output" fixes this
+
+The `output` block is like installing a **window** in Room A.
+
+1. **Room A (Network):** Builds the subnet -> Puts the ID in the window (`output`).
+2. **Root (Hallway):** Takes the ID from the window -> Walks it over to Room B.
+3. **Room B (AKS):** Accepts the ID through the door (`variable`).
+
+**The Code Reality:**
+If you don't use `output` in the Network module, the Root module (`main.tf`) cannot grab the ID to pass it to the AKS module. The chain is broken.
+
+---
+
+Does that analogy make sense? We do it this way so that modules are completely independent—you could reuse that Network module for a Database or a VM without changing the code inside.
+
+If you're cool with that, let's jump back to that **Quick Check** regarding the CNI/Subnet size (Step 4), because it's a critical "gotcha" in AKS networking.
+
+**Here is the question again:**
+We configured `network_plugin = "azure"` (Azure CNI).
+What happens if we deploy this using a tiny subnet (like a `/28` with only 11 IPs)?
 
 A) Terraform will automatically expand the subnet for us.
 B) The deployment will likely fail or get stuck because there aren't enough IPs for the pods.

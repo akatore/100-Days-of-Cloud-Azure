@@ -1,5 +1,3 @@
-Previous: [Step 3: Writing the Network Module.md](./Step-3:-Writing-the-Network-Module.md)
-
 **Spot on!** 🎯
 
 You calculated that perfectly. You have about **8 Nodes** max.
@@ -114,4 +112,5 @@ B) The AKS cluster would create its own new subnet.
 C) We would have no way to tell the AKS cluster which subnet to use, and our code would fail.
 ```
 
-Next: [Day 6.1: AKS deployment/Step-4:-Writing-the-AKS-Cluster-Module](./Step-4:-Writing-the-AKS-Cluster-Module.md)
+Next: [Step-4:-Writing-the-AKS-Cluster-Module](./Step-4:-Writing-the-AKS-Cluster-Module.md)
+
