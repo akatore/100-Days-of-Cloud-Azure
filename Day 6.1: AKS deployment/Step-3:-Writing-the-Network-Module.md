@@ -19,7 +19,7 @@ We need three files in our `modules/network/` folder: `variables.tf`, `main.tf`,
 
 First, we tell Terraform what ingredients we need from the user.
 
-```json
+```hcl
 # modules/network/variables.tf
 
 variable "resource_group_name" {
@@ -58,7 +58,7 @@ variable "aks_subnet_address_prefix" {
 
 Now, we use those variables to build the infrastructure.
 
-```json
+```hcl
 # modules/network/main.tf
 
 # 1. Create the Virtual Network
@@ -83,7 +83,7 @@ resource "azurerm_subnet" "aks_subnet" {
 
 This is the most critical part for modules. The **AKS Cluster** (which we will build next) needs to know *where* to live. It doesn't know the name of the subnet; it needs the **Resource ID**.
 
-```json
+```hcl
 # modules/network/outputs.tf
 
 output "aks_subnet_id" {
